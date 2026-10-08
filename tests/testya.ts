@@ -1,0 +1,32 @@
+import { test, expect } from '@playwright/test';
+
+test('test', async ({ page }) => {
+  await page.goto('https://360.yandex.ru/calendar/');
+  await page.goto('https://passport.yandex.ru/pwl-yandex/auth/add?retpath=https%3A%2F%2Fid.yandex.ru%2F%3Fretpath%3Dhttps%253A%252F%252Fmail.yandex.ru%252Fu2709%252F%253Fuid%253D547021293&noreturn=1');
+  await expect(page.getByRole('heading', { name: 'Введите номер телефона' })).toBeVisible();
+  await page.getByText('Чтобы войти или зарегистрироваться').click();
+  await expect(page.getByText('Чтобы войти или зарегистрироваться')).toBeVisible();
+  await expect(page.locator('label')).toBeVisible();
+  await expect(page.getByTestId('webauthn-auth-button')).toBeVisible();
+  await expect(page.getByTestId('magic-btn')).toBeVisible();
+  await expect(page.getByTestId('split-add-user-more-button')).toBeVisible();
+  await page.locator('body').click();
+  await page.locator('body').click();
+  await page.getByTestId('text-field-input').click();
+  await page.getByTestId('text-field-input').fill('+7 (916) 780-70-39');
+  await page.locator('span').nth(4).click();
+  await page.getByTestId('text-field-input').click();
+  await page.getByTestId('text-field-input').press('CapsLock');
+  await page.getByTestId('text-field-input').press('CapsLock');
+  await page.getByTestId('text-field-input').press('CapsLock');
+  await expect(page.locator('label')).toContainText('+7 (916) 780-70-39');
+  await expect(page.getByTestId('split-add-user-next-phone')).toMatchAriaSnapshot(`- button "Войти"`);
+  await page.goto('https://passport.yandex.ru/pwl-yandex/auth/code?retpath=https%3A%2F%2Fid.yandex.ru%2F%3Fretpath%3Dhttps%253A%252F%252Fmail.yandex.ru%252Fu2709%252F%253Fuid%253D547021293&noreturn=1');
+  await expect(page.getByTestId('code-field-segment').first()).toBeEmpty();
+  await expect(page.getByTestId('code-field-segment').nth(1)).toBeEmpty();
+  await page.getByTestId('code-field-segment').first().click();
+  await expect(page.getByTestId('code-field-segment').nth(2)).toBeEmpty();
+  await expect(page.getByTestId('code-field-segment').nth(3)).toBeEmpty();
+  await expect(page.getByTestId('code-field-segment').nth(4)).toBeEmpty();
+  await expect(page.getByTestId('code-field-segment').nth(5)).toBeEmpty();
+});
